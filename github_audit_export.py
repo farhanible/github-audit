@@ -1,7 +1,7 @@
 import mechanize
 import cookielib
 import json
-
+import time 
 #-----------------------------------Start fake browser setup--------------------------------------------------
 #Pulled from http://stockrt.github.io/p/emulating-a-browser-in-python-with-mechanize/
 
@@ -39,12 +39,9 @@ org = ''
 
 r = br.open('http://github.com')
 r = br.open('https://github.com/login')
-r = br.open('https://github.com/login')
 
-
-
-for f in br.forms():
-	print f
+#for f in br.forms():
+#	print f
 
 br.select_form(nr=1)
 br.form['login']='<username>'
@@ -55,22 +52,29 @@ br.form['otp']='<OTP>'
 br.submit()
 
 r = br.open('https://github.com/organizations/' + org + '/settings/audit-log')
-print br.response().read()
+#print br.response().read()
 
 br.select_form(nr=4)
 br.form['export_format']=['0','json']
 br.submit()
 
-print br.response().read()
+#print br.response().read()
 
+#The response contains a 
+#job_url: This URL provides the status of the export job that is running on the github back-end. The audit log cannot be fetched until this job has run successfully.
+#export_url: This is the download URL for the audit log.
 audit_export_response = json.loads(br.response().read())
 
+#Check the status of the job
 r = br.open(str(audit_export_response['job_url']))
-{"job":{"id":"asdfadsfaads","state":"success"}}
 
-audit_export_job_status = json.loads(br.response().read())
-
-if audit_export_job_status['state'] == 'success':
-  r = br.open(str(theresponse['export_url']))
+while True:
+	#Parse the response
+	audit_export_job_status = json.loads(br.response().read())
+	#Fetch the audit log if the job completed successfully
+	if audit_export_job_status['state'] == 'success':
+		r = br.open(str(theresponse['export_url']))
+		break
+  	time.sleep(5)
   
   
