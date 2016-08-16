@@ -8,7 +8,7 @@ This project uses Mechanize to automate the collection of the Github Organizatio
 
 Set environment variable $log_uri to the HTTP/HTTPS URI where you want to send (HTTP POST) the logs to: 
 
-$ set log_uri="https://endpoint2.collection.sumologic.com/receiver/v1/http/<token>"
+$ set log_uri="https://endpoint2.collection.sumologic.com/receiver/v1/http/token"
 
 $ export  log_uri
 
