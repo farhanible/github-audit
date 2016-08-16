@@ -126,7 +126,9 @@ def main():
 	print 'Completed initial login request.'
 
 	#Two-factor auth
-	if args.otp:
+	if not args.otp:
+		print "Not performing OTP auth"
+	else:
 		br.select_form(nr=1)
 		br.form['otp']=args.otp
 		br.submit()
