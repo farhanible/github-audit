@@ -126,9 +126,10 @@ def main():
 	print 'Completed initial login request.'
 
 	#Two-factor auth
-	br.select_form(nr=1)
-	br.form['otp']=args.otp
-	br.submit()
+	if args.otp:
+		br.select_form(nr=1)
+		br.form['otp']=args.otp
+		br.submit()
 
 	print 'Completed 2FA login request.'
 
