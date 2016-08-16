@@ -27,6 +27,7 @@ Format:
 Usage Examples:
 
 $ github_audit_export.py -username your_username -password your_password -otp 123456 -org SomeGithubOrg
+
 $ github_audit_export.py -file -otp 123456 -org SomeGithubOrg
 
 
