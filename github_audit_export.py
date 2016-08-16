@@ -15,6 +15,7 @@ import os
 if os.environ.has_key("log_uri"):
 	SUMO_URI = os.environ['log_uri']
 else:
+	print 'Evniroment variable log_uri not found'
 	sys.exit
 
 
@@ -37,7 +38,7 @@ def main():
 		sys.exit()
 	elif args.file:
 		try:
-			config_file = open('config.json', 'r')
+			config_file = open('../config/config.json', 'r')
 			configs = config_file.read()
 		except Exception, e:
 			print "Unable to open config.json file."
