@@ -192,6 +192,7 @@ def main():
 	#print br.response().read() #prints the entire returned json object, which contains the full audit log
 
 	log_export =  json.loads(br.response().read())
+	timestamp_lastlog = json.dumps(log_export[-1]['created_at'])
 
 	#print str(log_export[0])
 
@@ -201,6 +202,7 @@ def main():
 	#Go through the dict and only export logs since the previously  marked 
 	for log in log_export:
 		if log['created_at'] >  timestamp_int: #This condition is always true if there is no placeholder.state, because we set timestamp_int to 0
+			log['timestamp'] = str(log.pop('created_at'))
 			log_export_parsed = log_export_parsed + json.dumps(log) + "\n" #We parse it like this because the Sumologic ingestion default is one log message per line
 			#log_export_parsed.add(log)
 	print log_export_parsed
@@ -216,7 +218,7 @@ def main():
 		#Store the last timestamp in the state file. This way we don't export it and anything before it to any external log destination again.
 		try:
 			placeholder = open('placeholder.state', 'w')
-			placeholder.write(json.dumps(log_export[-1]['created_at']))
+			placeholder.write(timestamp_lastlog)
 			placeholder.close()
 		except Exception, e:
 			print e
